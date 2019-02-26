@@ -1,62 +1,41 @@
+/**
+ 你是产品经理，目前正在带领一个团队开发新的产品。不幸的是，你的产品的最新版本没有通过质量检测。由于每个版本都是基于之前的版本开发的，所以错误的版本之后的所有版本都是错的。
+
+ 假设你有 n 个版本 [1, 2, ..., n]，你想找出导致之后所有版本出错的第一个错误的版本。
+
+ 你可以通过调用 bool isBadVersion(version) 接口来判断版本号 version 是否在单元测试中出错。实现一个函数来查找第一个错误的版本。你应该尽量减少对调用 API 的次数。
+
+ 示例:
+ 给定 n = 5，并且 version = 4 是第一个错误的版本。
+ 调用 isBadVersion(3) -> false
+ 调用 isBadVersion(5) -> true
+ 调用 isBadVersion(4) -> true
+ 所以，4 是第一个错误的版本。
+ */
 var solution = function (isBadVersion) {
   /**
    * @param {integer} n Total versions
    * @return {integer} The first bad version
    */
   return function (n) {
-    let currentVal = 1 + Math.floor((n - 1) / 2)
-    let preVal = currentVal
-    let firstBug = null
-    let queue = [isBadVersion(currentVal) ? 1 : n]
-    while (currentVal = queue.pop()) {
-      console.log('currentVal', currentVal)
-      console.log('preVal', preVal)
-      if (isBadVersion(currentVal)) {
-        firstBug = currentVal
+    let left = 0;
+    let right = n;
+    while (left < right) {
+      let middle = Math.floor((left + right) / 2);
+      if (isBadVersion(middle)) {
+        right = middle;
       } else {
-
-      }
-      if (currentVal - preVal > 0) {
-        queue.push(Math.floor(preVal + (currentVal - preVal) / 2))
-        preVal = currentVal
-      } else {
-        
+        left = middle + 1;
       }
     }
-    return firstBug
+    return left;
   }
-  /*
-  return function (n) {
-    let preCheck = Math.floor(n / 2) + 1;
-    let first = null;
-    let nextCheck = [n];
-    if (isBadVersion(preCheck)) {
-      first = preCheck;
-      nextCheck = [1];
-    }
-    let check = undefined;
-    while (check = nextCheck.pop()) {
-      let tmp;
-      if (isBadVersion(check)) {
-        if (check < first) first = check;
-        tmp = preCheck + Math.floor((check - preCheck) / 2);
-      } else {
-        tmp = check + Math.floor((first - check) / 2);
-      }
-      if (tmp === check || tmp === preCheck || tmp === first) {
-        break;
-      }
-      preCheck = check;
-      nextCheck.push(tmp);
-    }
-    return first;
-  };
-  */
 };
-
+/*
 function test (version) {
-  return [7, 8].includes(version)
+  return version >= 4
 }
 
-let first = solution(test)(8)
+let first = solution(test)(5)
 console.log('firstVersion', first)
+*/
