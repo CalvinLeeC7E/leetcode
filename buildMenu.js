@@ -2,7 +2,7 @@
 
 const fs = require('fs')
 const path = require('path')
-const categoryName = '初级'
+const categoryName = '中级'
 const basePath = path.join('./', categoryName)
 let dirs = fs.readdirSync(basePath)
 let fileData = ''
